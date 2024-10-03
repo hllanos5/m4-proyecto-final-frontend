@@ -47,11 +47,41 @@ main {
   .principal {
       padding: 2rem 2rem 0 2rem;
       height: 100%;
+        .negrita{
+            font-weight: bold;
+        }
+        .fila{
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-block: 1rem;
+        }
       .dashboard{
           display: flex;
           align-items: center;
           justify-content: center;
           height: 100%;
+      }
+      .listado-incidencias{
+        .incidencia-filtros-card{
+            margin-bottom: 2rem;
+            .incidencias-filtros{
+                display: grid;
+                grid-template-columns: repeat(auto-fill, 20%);
+                gap: 0.7rem;
+                .filtro{
+                    display: flex;
+                    flex-direction: column;
+                    label{
+                        margin-bottom: 0.4rem;
+                    }
+                    &.btn-buscar{
+                        place-content: end;
+                    }
+                }
+                
+            }
+        }
       }
   }
 }
