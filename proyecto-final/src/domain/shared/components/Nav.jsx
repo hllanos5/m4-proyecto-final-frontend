@@ -3,15 +3,17 @@ import { Menubar } from 'primereact/menubar';
 import { OverlayPanel } from 'primereact/overlaypanel';
 import { Avatar } from 'primereact/avatar';
 import { Divider } from 'primereact/divider';
-//import { useLocation } from 'wouter';
+import { useLocation } from 'wouter';
 
 export default function Nav() {
-
+    const [, navigate] = useLocation();
     const op = useRef(null);
     //const setLocation = useLocation();
 
     const handleLogout = () => {
-        alert("Salir Sistema")
+        localStorage.removeItem('authToken');
+        console.clear();
+        navigate('/');
       };
 
     return (

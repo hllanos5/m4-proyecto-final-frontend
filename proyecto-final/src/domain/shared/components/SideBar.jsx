@@ -1,46 +1,61 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { TieredMenu } from 'primereact/tieredmenu';
+import { useLocation } from 'wouter';
+import { AuthContext } from '../context/AuthContext';
 
 export default function SideBar() {
+    const [, navigate] = useLocation();
 
-    const items = [
+    const {user} = useContext(AuthContext);
+
+    const menuAdministrador = [
         {
-            label: 'Exámenes',
-            icon: 'pi pi-file-edit',
+            label: 'Incidencias',
+            icon: 'pi pi-wrench',
             command: () => {
-                alert("Exámenes Alumno");
+                alert("Incidencias Admi");
+                //navigate("/examen-alumno");
             }
         },
         {
-            label: 'Mis Videos',
-            icon: 'pi pi-video',
+            label: 'Usuarios',
+            icon: 'pi pi-user',
             command: () => {
-                alert("Mis videos");
+                alert("Usuarios Admi");
+                //navigate("/examen-alumno");
             }
         },
         {
-            label: 'Exámenes',
-            icon: 'pi pi-file-edit',
+            label: 'Reportes',
+            icon: 'pi pi-list-check',
             command: () => {
-                alert("Exámenes Profesor");
-            }
-        },
-        {
-            label: 'Mis Alumnos',
-            icon: 'pi pi-video',
-            command: () => {
-                alert("Mis Alumnos");
-            }
-        },
-        {
-            label: 'Nuevo Examen',
-            icon: 'pi pi-pencil',
-            command: () => {
-                alert("Mi examen");
+                alert("Reportes Admi");
             }
         }
-        
     ];
+
+    const menuResidente = [
+        {
+            label: 'Incidencias',
+            icon: 'pi pi-wrench',
+            command: () => {
+                alert("Incidencias Residente");
+                //navigate("/examen-alumno");
+            }
+        },
+        {
+            label: 'Reportes',
+            icon: 'pi pi-list-check',
+            command: () => {
+                alert("Reportes Residente");
+            }
+        }
+    ];
+
+    let items =  menuAdministrador;
+    if(user?.rol === 'RESIDENTE'){
+        items = menuResidente;
+    }
 
     return (
         <aside>

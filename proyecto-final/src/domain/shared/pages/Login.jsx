@@ -1,21 +1,21 @@
-import React from 'react'
+import React, { useState, useRef, useContext, useEffect  } from "react";
 import { IconField } from "primereact/iconfield";
 import { InputIcon } from "primereact/inputicon";
 import { InputText } from "primereact/inputtext";
 import { Button } from 'primereact/button';
-//import { AuthContext } from '../../shared/context/authContext';
+import { AuthContext } from '../context/AuthContext';
 
 export default function Login() {
-    //const { loginMutation } = useContext(AuthContext);
+    const { loginMutation } = useContext(AuthContext);
     
     const handleLogin = async e => {
         e.preventDefault();
-        /*const data = {
-            username: e.target.username.value,
+        const data = {
+            correo: e.target.correo.value,
             password: e.target.password.value,
         };
 
-        await loginMutation.mutate(data);*/
+        await loginMutation.mutate(data);
 
   };
   
@@ -27,7 +27,7 @@ export default function Login() {
             
             <IconField iconPosition="left">
                 <InputIcon className="pi pi-envelope"> </InputIcon>
-                <InputText v-model="value1" placeholder="Email" name='username'/>
+                <InputText v-model="value1" placeholder="Email" name='correo'/>
             </IconField>
             <IconField iconPosition="left">
                 <InputIcon className="pi pi-lock"> </InputIcon>
