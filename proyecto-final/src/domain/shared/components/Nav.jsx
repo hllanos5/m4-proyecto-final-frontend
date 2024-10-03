@@ -1,14 +1,13 @@
 import React, { useRef, useContext } from 'react'
-import { Menubar } from 'primereact/menubar';
 import { OverlayPanel } from 'primereact/overlaypanel';
 import { Avatar } from 'primereact/avatar';
-import { Divider } from 'primereact/divider';
 import { useLocation } from 'wouter';
+import { AuthContext } from '../context/AuthContext';
 
 export default function Nav() {
-    const [, navigate] = useLocation();
+    const [, navigate] = useLocation();    
+    const {user} = useContext(AuthContext);
     const op = useRef(null);
-    //const setLocation = useLocation();
 
     const handleLogout = () => {
         localStorage.removeItem('authToken');
@@ -18,7 +17,7 @@ export default function Nav() {
 
     return (
         <nav>
-            <label htmlFor="">Alumno Funval</label>
+            <label htmlFor="">{user?.nombre} {user?.paterno} {user?.materno}</label>
             <Avatar image="logo.png" shape="circle" onClick={(e) => op.current.toggle(e)}/>
 
             <OverlayPanel ref={op}>

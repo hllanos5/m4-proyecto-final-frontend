@@ -59,7 +59,7 @@ export default function SideBar() {
 
     return (
         <aside>
-            <h4>Funval</h4>
+            <h4>Incidencias</h4>
             <TieredMenu model={items} breakpoint="767px" />
         </aside>
     )
