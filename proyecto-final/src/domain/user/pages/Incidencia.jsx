@@ -44,7 +44,11 @@ export default function Incidencia() {
             );
         }));
     }
-    /* {I} - Funciones complementarias*/ 
+    /* {I} - Funciones complementarias*/
+    /*const detailBodyIncident = (rowData) => {
+        return <Button type="button" className="p-button-sm p-button-text" onClick={() => handleVerDetalle(rowData, options.frozenRow, options.rowIndex)} />;
+    }*/
+
     const statusBodyTemplate = (incidencia) => {
         return <Tag value={incidencia.estado} severity={getSeverity(incidencia)}></Tag>;
     };
@@ -80,6 +84,7 @@ export default function Incidencia() {
                 <Column field="nombres" header="Nombres" style={{ width: '20%' }}></Column>
                 <Column field="titulo" header="Titulo" style={{ width: '20%' }}></Column>
                 <Column field="estado" header="Estado" style={{ width: '20%' }} body={statusBodyTemplate}></Column>
+                <Column field="fecha_incidencia" header="Fecha Incidencia" style={{ width: '20%' }}></Column>
                 <Column field="fecha_incidencia" header="Fecha Incidencia" style={{ width: '20%' }}></Column>
             </DataTable>
         </div>
