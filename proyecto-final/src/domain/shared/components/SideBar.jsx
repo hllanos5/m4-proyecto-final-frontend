@@ -13,8 +13,7 @@ export default function SideBar() {
             label: 'Incidencias',
             icon: 'pi pi-wrench',
             command: () => {
-                alert("Incidencias Admi");
-                //navigate("/examen-alumno");
+                navigate("/incidencias");
             }
         },
         {
