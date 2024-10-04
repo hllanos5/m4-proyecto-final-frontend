@@ -1,16 +1,19 @@
 import React, { useState, useRef, useContext, useEffect  } from "react";
 import Layout from '../../shared/layout/Layout';
+import { Button } from 'primereact/button';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Tag } from 'primereact/tag';
 import useIncidencia from "../../shared/services/useIncidencia"; 
 import IncidenciaFiltros from "../components/IncidenciaFiltros";
+import { useLocation } from 'wouter';
 
 export default function Incidencia() {    
     const { aIncidencia, isIncidenciaLoading } = useIncidencia();
     const [ incidencia, setIncidencia] = useState([]);
     const [ incidenciaFiltros, setIncidenciaFiltros] = useState([]);
     const [ filtros, setFiltros ] = useState({});
+    const [, navigate] = useLocation();
 
     const cargarData= ()=>{
         if (!isIncidenciaLoading) {
@@ -18,7 +21,7 @@ export default function Incidencia() {
             setIncidenciaFiltros(aIncidencia);
         }
         if(filtros.id || filtros.nombres || filtros.titulo || filtros.fechaInicio || filtros.fechaFin || filtros.estado){
-            console.log(filtros);
+           
             filtrarIncidencias(filtros);
         }
     }
@@ -45,15 +48,24 @@ export default function Incidencia() {
         }));
     }
     /* {I} - Funciones complementarias*/
-    /*const detailBodyIncident = (rowData) => {
-        return <Button type="button" className="p-button-sm p-button-text" onClick={() => handleVerDetalle(rowData, options.frozenRow, options.rowIndex)} />;
-    }*/
 
-    const statusBodyTemplate = (incidencia) => {
-        return <Tag value={incidencia.estado} severity={getSeverity(incidencia)}></Tag>;
+    const handleVerDetalle = (data) => {
+        navigate("/incidencias-detalle/"+data.id);
+    }
+
+    const detailBodyIncident = (rowData) => {
+        return <Button type="button" icon="pi pi-search" className="p-button-sm p-button-text" onClick={() => handleVerDetalle(rowData)} />;
+    }
+
+    const templateEstado = (incidencia) => {
+        return <Tag value={incidencia.estado} severity={getSeverityEstado(incidencia)}></Tag>;
+    };
+
+    const templatePrioridad = (incidencia) => {
+        return <Tag value={incidencia.prioridad} severity={getSeverityPrioridad(incidencia)}></Tag>;
     };
     
-    const getSeverity = (incidencia) => {
+    const getSeverityEstado = (incidencia) => {
         switch (incidencia.estado) {
             case 'Abierta':
                 return 'danger';
@@ -62,6 +74,22 @@ export default function Incidencia() {
                 return 'warning';
 
             case 'Cerrada':
+                return 'success';
+
+            default:
+                return null;
+        }
+    };
+
+    const getSeverityPrioridad = (incidencia) => {
+        switch (incidencia.prioridad) {
+            case 'Alta':
+                return 'danger';
+
+            case 'Media':
+                return 'warning';
+
+            case 'Baja':
                 return 'success';
 
             default:
@@ -80,12 +108,13 @@ export default function Incidencia() {
             <h1>Listado de Incidencias</h1>
             <IncidenciaFiltros setFiltros={setFiltros}/>
             <DataTable value={incidenciaFiltros} tableStyle={{ minWidth: '50rem' }} paginator rows={5} rowsPerPageOptions={[5, 10, 25, 50]}>
-                <Column field="id" header="# Incidencia" style={{ width: '20%' }}></Column>
+                <Column field="id" header="# Incidencia" style={{ width: '10%' }}></Column>
                 <Column field="nombres" header="Nombres" style={{ width: '20%' }}></Column>
                 <Column field="titulo" header="Titulo" style={{ width: '20%' }}></Column>
-                <Column field="estado" header="Estado" style={{ width: '20%' }} body={statusBodyTemplate}></Column>
+                <Column field="estado" header="Estado" style={{ width: '10%' }} body={templateEstado}></Column>
+                <Column field="prioridad" header="Prioridad" style={{ width: '10%' }} body={templatePrioridad}></Column>
                 <Column field="fecha_incidencia" header="Fecha Incidencia" style={{ width: '20%' }}></Column>
-                <Column field="fecha_incidencia" header="Fecha Incidencia" style={{ width: '20%' }}></Column>
+                <Column header="Opciones" style={{ width: '20%' }} body={detailBodyIncident}></Column>
             </DataTable>
         </div>
     </Layout>
