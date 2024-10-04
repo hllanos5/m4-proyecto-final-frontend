@@ -37,13 +37,13 @@ export default function IncidenciaDetalleCabecera() {
         }
     };
 
-    let titulo = `Incidencia # ${incidencia.id}`
+    let titulo = `Incidencia # ${incidencia.id} - ${incidencia.titulo}`
 
     return (
-        <Card title={titulo}>
+        <Card title={titulo} className="incidencia-cabecera">
             <div className='panel-incidencia-detalle-cabecera'>
-                <label className='negrita'>Titulo: </label>
-                <label>{incidencia.titulo} </label>
+                <label className='negrita'>Nombres: </label>
+                <label>{incidencia.nombres} </label>
                 <label className='negrita'>Prioridad: </label>
                 <label><Tag value={incidencia.prioridad} severity={getSeverityPrioridad(incidencia.prioridad)}></Tag> </label>
                 <label className='negrita'>Estado: </label>

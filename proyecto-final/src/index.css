@@ -56,7 +56,7 @@ main {
             gap: 1rem;
             margin-block: 1rem;
         }
-      .dashboard{
+        .dashboard{
           display: flex;
           align-items: center;
           justify-content: center;
@@ -81,13 +81,45 @@ main {
                 }
                 
             }
+            
         }
       }
-      .panel-incidencia-detalle-cabecera{
-        display: grid;
-        grid-template-columns: repeat(auto-fill, 10%);
-        gap: 0.7rem;
+      .listado-incidencias-detalle{
+        .incidente-fecha{
+            font-size: 12px;
+            color: gray;
+        }
+        .seccion-comentario{
+            height: 4rem;
+        }
+        .contenedor-incidencias-comentario{
+            
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 5px;
+        }
+        .RESIDENTE{
+            background-color: #f5f5f5;
+        }
+        .ADMIN {
+            background-color: #f2f6e9c7;
+        }
+        .acciones{
+            display: flex;
+            place-content: end;
+            margin-bottom: 1rem;
+        }
+        .incidencia-cabecera{
+            margin-bottom: 2rem;
+            .panel-incidencia-detalle-cabecera{
+                display: grid;
+                grid-template-columns: repeat(auto-fill, 15%);
+                gap: 0.7rem;
+              }
+          }
       }
+      
+      
   }
 }
 
