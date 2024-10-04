@@ -14,7 +14,7 @@ export default function IncidenciaDetalle() {
         navigate("/incidencias");
     }
     //Proceso de obtener data desde el service
-    const { aIncidenciaDetalle, isIncidenciaDetalleLoading } = useIncidenciaDetalle({idSeguimiento: params.id});    
+    const { aIncidenciaDetalle, isIncidenciaDetalleLoading } = useIncidenciaDetalle({idSeguimiento: params.id});
     const [ incidenciaDetalle, setIncidenciaDetalle] = useState([]);
     
     const cargarData= ()=>{
@@ -35,11 +35,7 @@ export default function IncidenciaDetalle() {
     console.log(incidenciaDetalle);
     //Funciones complementarias
     const listTemplate = (items) => {
-        console.log("hola")
-        console.log(items);
         if (!items || items.length === 0) return null;
-        console.log("hola22")
-        
         let list = items.map((element, index) => {
             return <div>{element.comentario}</div>;
         });
@@ -49,8 +45,16 @@ export default function IncidenciaDetalle() {
 
     return (
         <Layout>
-            <IncidenciaDetalleCabecera data={incidenciaDetalle}/>
-            <DataView value={incidenciaDetalle} listTemplate={listTemplate} paginator rows={5} />            
+            <div className="">
+                {
+                    (!isIncidenciaDetalleLoading)  && 
+                    <>
+                        <IncidenciaDetalleCabecera data={incidenciaDetalle}/>
+                        <DataView value={incidenciaDetalle} listTemplate={listTemplate} paginator rows={5} />            
+                    </>
+                }
+                
+            </div>
         </Layout>
     )
 }

@@ -50,6 +50,7 @@ export default function Incidencia() {
     /* {I} - Funciones complementarias*/
 
     const handleVerDetalle = (data) => {
+        localStorage.setItem("incidencia", JSON.stringify(data));
         navigate("/incidencias-detalle/"+data.id);
     }
 

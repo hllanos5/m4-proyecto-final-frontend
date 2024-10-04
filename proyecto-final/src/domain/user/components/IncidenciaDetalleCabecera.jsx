@@ -2,9 +2,8 @@ import React from 'react'
 import { Card } from 'primereact/card';
 import { Tag } from 'primereact/tag';
 
-export default function IncidenciaDetalleCabecera({data}) {
-    console.log(data);
-
+export default function IncidenciaDetalleCabecera() {
+    const incidencia = JSON.parse(localStorage.getItem('incidencia'));
 
     const getSeverityPrioridad = (prioridad) => {
         switch (prioridad) {
@@ -38,17 +37,17 @@ export default function IncidenciaDetalleCabecera({data}) {
         }
     };
 
-    let titulo = `Incidencia # ${data[0]?.incidencia_id}`
+    let titulo = `Incidencia # ${incidencia.id}`
 
     return (
         <Card title={titulo}>
             <div className='panel-incidencia-detalle-cabecera'>
                 <label className='negrita'>Titulo: </label>
-                <label>{data[0]?.titulo} </label>
+                <label>{incidencia.titulo} </label>
                 <label className='negrita'>Prioridad: </label>
-                <label><Tag value={data[0]?.prioridad} severity={getSeverityPrioridad(data[0]?.prioridad)}></Tag> </label>
+                <label><Tag value={incidencia.prioridad} severity={getSeverityPrioridad(incidencia.prioridad)}></Tag> </label>
                 <label className='negrita'>Estado: </label>
-                <label><Tag value={data[0]?.estado} severity={getSeverityEstado(data[0]?.estado)}></Tag> </label>
+                <label><Tag value={incidencia.estado} severity={getSeverityEstado(incidencia.estado)}></Tag> </label>
             </div>
         </Card>
     )
