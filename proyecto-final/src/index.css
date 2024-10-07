@@ -62,6 +62,16 @@ main {
           justify-content: center;
           height: 100%;
       }
+      .listado-usuarios {
+        .acciones{
+            display: flex;
+            place-content: end;
+            margin-bottom: 1rem;
+        }
+        .usuario-filtros-card{
+            margin-bottom: 2rem;
+        }
+      }
       .listado-incidencias{
         .incidencia-filtros-card{
             margin-bottom: 2rem;

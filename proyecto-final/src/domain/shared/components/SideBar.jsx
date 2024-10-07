@@ -20,8 +20,7 @@ export default function SideBar() {
             label: 'Usuarios',
             icon: 'pi pi-user',
             command: () => {
-                alert("Usuarios Admi");
-                //navigate("/examen-alumno");
+                navigate("/usuarios");
             }
         },
         {
