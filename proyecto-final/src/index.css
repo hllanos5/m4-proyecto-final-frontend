@@ -10,6 +10,12 @@
      
   }
 }
+.frm-usuario-mantenedor{
+    .botones{
+        display: flex;
+        place-content: end;
+    }
+}
 .fila{
     display: flex;
     flex-direction: column;
@@ -67,6 +73,10 @@ main {
             display: flex;
             place-content: end;
             margin-bottom: 1rem;
+        }
+        .boton-filtro{
+            display: flex;
+            align-items: start;
         }
         .usuario-filtros-card{
             margin-bottom: 2rem;
