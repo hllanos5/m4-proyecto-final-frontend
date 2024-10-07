@@ -6,18 +6,22 @@ import { Button } from 'primereact/button';
 import useIncidenciaDetalle from "../../shared/services/useIncidenciaDetalle";
 import IncidenciaDetalleCabecera from "../components/IncidenciaDetalleCabecera";
 import { Dialog } from 'primereact/dialog';
+import { Editor } from 'primereact/editor';
+import { AuthContext } from '../../shared/context/AuthContext';
 
 export default function IncidenciaDetalle() {
     //Validacion si existe el parametro que se envia por get
     const [, navigate] = useLocation();
     const [match, params] = useRoute('/incidencias-detalle/:id');
     const [visible, setVisible] = useState(false);
+    const [comentario, setComentario] = useState('');
+    const {user} = useContext(AuthContext);
 
     if(!match){
         navigate("/incidencias");
     }
     //Proceso de obtener data desde el service
-    const { aIncidenciaDetalle, isIncidenciaDetalleLoading } = useIncidenciaDetalle({idSeguimiento: params.id});
+    const { aIncidenciaDetalle, isIncidenciaDetalleLoading, registrarIncidenciaDetalleMutation  } = useIncidenciaDetalle({idSeguimiento: params.id});
     const [ incidenciaDetalle, setIncidenciaDetalle] = useState([]);
     
     const cargarData= ()=>{
@@ -34,7 +38,8 @@ export default function IncidenciaDetalle() {
 
     if (isIncidenciaDetalleLoading) {
         return <div>Cargando ...</div>;
-    }   
+    }
+    
     //Funciones complementarias
     const listTemplate = (items) => {
         if (!items || items.length === 0) return null;
@@ -44,11 +49,9 @@ export default function IncidenciaDetalle() {
             return (
                 <div key={index} className={clase}>
                     <div className="fila incidente-fecha">
-                        <label>{element.fecha}</label>
+                        <label>{element.fecha} <b>{element.rol === 'ADMIN' && '- ADMIN'}</b></label>
                     </div>
-                    <div className="fila seccion-comentario">
-                        {element.comentario}
-                    </div>
+                    <div className="fila seccion-comentario" dangerouslySetInnerHTML={{ __html: element.comentario }}/>
                 </div>
                 
             );
@@ -56,7 +59,26 @@ export default function IncidenciaDetalle() {
 
         return <div className="grid grid-nogutter">{list}</div>;
     };
-930862165
+
+    const handleGrabarComentario = async  ()=> {
+        const data = {
+            "incidencia_id": params.id,
+            "comentario": comentario,
+            "usuario_id":  user.id
+        }
+        await registrarIncidenciaDetalleMutation.mutateAsync({
+            data:data
+          });
+          location.reload(true);
+    }
+
+    const footerContent = (
+        <div>
+            <Button label="Agregar" icon="pi pi-check" onClick={() =>{setVisible(false); handleGrabarComentario()}} autoFocus />
+            <Button label="Cancelar" icon="pi pi-times" onClick={() => setVisible(false)} className="p-button-text" />
+        </div>
+    );
+
     return (
         <Layout>
             <div className="listado-incidencias-detalle">
@@ -70,8 +92,8 @@ export default function IncidenciaDetalle() {
                         <DataView value={incidenciaDetalle} listTemplate={listTemplate} paginator rows={5} />            
                     </>
                 }
-                <Dialog header="Agregar Comentario" visible={visible} style={{ width: '50vw' }} onHide={() => {if (!visible) return; setVisible(false); }}>
-                    <InputTextarea value={value} onChange={(e) => setValue(e.target.value)} rows={5} cols={30} />
+                <Dialog header="Agregar Comentario" visible={visible} style={{ width: '50vw' }} onHide={() => {if (!visible) return; setVisible(false); }} footer={footerContent}>
+                    <Editor value={comentario} onTextChange={(e) => setComentario(e.htmlValue)} style={{ height: '320px' }} />
                 </Dialog>
             </div>
         </Layout>
