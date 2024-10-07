@@ -18,6 +18,7 @@ export const AuthContextProvider = ({children}) => {
             setErrorMessage(error.response?.data?.message || "Error desconocido");
         },
         onSuccess: (data) => {
+            localStorage.setItem("logeo", 1)
             localStorage.setItem("authToken", data.token) || sessionStorage.setItem("authToken", data.token)
             navigate("/dashboard")
         }

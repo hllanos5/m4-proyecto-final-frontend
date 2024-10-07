@@ -13,7 +13,8 @@ import { InputTextarea } from "primereact/inputtextarea";
 import { Dropdown } from 'primereact/dropdown';
 import { AuthContext } from '../../shared/context/AuthContext';
 
-export default function Incidencia() {    
+export default function Incidencia() {
+    const logeo = localStorage.getItem('logeo');
     const { aIncidencia, isIncidenciaLoading, registrarIncidenciaMutation } = useIncidencia();
     const [ incidencia, setIncidencia] = useState([]);
     const [ incidenciaFiltros, setIncidenciaFiltros] = useState([]);
@@ -26,9 +27,14 @@ export default function Incidencia() {
     const {user} = useContext(AuthContext);
 
     const cargarData= ()=>{
-        if (!isIncidenciaLoading) {
+        if (!isIncidenciaLoading) {            
             setIncidencia(aIncidencia);
             setIncidenciaFiltros(aIncidencia);
+            if(logeo === '1'){
+                //TODO: se fuerza carga de data porque a la primera vez como se queda pegado con el inicio sesion enaterior por el rol
+                localStorage.setItem("logeo",0)
+                location.reload(true);
+            }
         }
         if(filtros.id || filtros.nombres || filtros.titulo || filtros.fechaInicio || filtros.fechaFin || filtros.estado){
            

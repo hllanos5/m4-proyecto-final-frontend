@@ -37,8 +37,7 @@ export default function SideBar() {
             label: 'Incidencias',
             icon: 'pi pi-wrench',
             command: () => {
-                alert("Incidencias Residente");
-                //navigate("/examen-alumno");
+                navigate("/incidencias");
             }
         },
         {

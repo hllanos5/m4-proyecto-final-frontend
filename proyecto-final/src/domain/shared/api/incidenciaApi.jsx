@@ -1,7 +1,9 @@
 import axios from 'axios';
 
-export const listarIncidencia =async () =>{
-    const res = await axios.get('http://localhost:3000/api/incidencia');
+export const listarIncidencia =async token =>{
+    const res = await axios.get('http://localhost:3000/api/incidencia',{
+        headers: { Authorization: token },
+    });
     return res.data;
 }
 
