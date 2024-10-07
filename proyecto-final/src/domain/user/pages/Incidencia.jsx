@@ -7,13 +7,23 @@ import { Tag } from 'primereact/tag';
 import useIncidencia from "../../shared/services/useIncidencia"; 
 import IncidenciaFiltros from "../components/IncidenciaFiltros";
 import { useLocation } from 'wouter';
+import { Dialog } from 'primereact/dialog';
+import { InputText } from "primereact/inputtext";
+import { InputTextarea } from "primereact/inputtextarea";
+import { Dropdown } from 'primereact/dropdown';
+import { AuthContext } from '../../shared/context/AuthContext';
 
 export default function Incidencia() {    
-    const { aIncidencia, isIncidenciaLoading } = useIncidencia();
+    const { aIncidencia, isIncidenciaLoading, registrarIncidenciaMutation } = useIncidencia();
     const [ incidencia, setIncidencia] = useState([]);
     const [ incidenciaFiltros, setIncidenciaFiltros] = useState([]);
     const [ filtros, setFiltros ] = useState({});
     const [, navigate] = useLocation();
+    const [visible, setVisible] = useState(false);
+    const [titulo, setTitulo] = useState('');
+    const [descripcion, setDescripcion] = useState('');
+    const [selectedEstado, setSelectedEstado] = useState(null);
+    const {user} = useContext(AuthContext);
 
     const cargarData= ()=>{
         if (!isIncidenciaLoading) {
@@ -97,7 +107,36 @@ export default function Incidencia() {
                 return null;
         }
     };
+
+    const handleGrabarIncidencia = async () => {
+        const data = {
+            usuario_id:  user.id,
+            titulo: titulo,
+            descripcion: descripcion,
+            prioridad: selectedEstado.code,
+            estado: 'Abierta'
+        }
+
+        await registrarIncidenciaMutation.mutateAsync({
+            data:data
+          });
+        
+          location.reload(true);
+    } 
+
+    const footerContent = (
+        <div>
+            <Button label="Agregar" icon="pi pi-check" onClick={() =>{setVisible(false); handleGrabarIncidencia()}} autoFocus />
+            <Button label="Cancelar" icon="pi pi-times" onClick={() => setVisible(false)} className="p-button-text" />
+        </div>
+    );
     /* {F} - Funciones complementarias*/
+
+    const estados = [
+        { name: 'Baja', code: 'Baja' },
+        { name: 'Media', code: 'Media' },
+        { name: 'Alta', code: 'Alta' }
+    ];
 
     if (isIncidenciaLoading) {
         return <div>Cargando ...</div>;
@@ -108,6 +147,9 @@ export default function Incidencia() {
         <div className='listado-incidencias'>
             <h1>Listado de Incidencias</h1>
             <IncidenciaFiltros setFiltros={setFiltros}/>
+            <div className="acciones">
+                <Button icon="pi pi-plus" severity="info" aria-label="Notification"  onClick={() => setVisible(true)} />
+            </div>
             <DataTable value={incidenciaFiltros} tableStyle={{ minWidth: '50rem' }} paginator rows={5} rowsPerPageOptions={[5, 10, 25, 50]}>
                 <Column field="id" header="# Incidencia" style={{ width: '10%' }}></Column>
                 <Column field="nombres" header="Nombres" style={{ width: '20%' }}></Column>
@@ -118,6 +160,22 @@ export default function Incidencia() {
                 <Column header="Opciones" style={{ width: '20%' }} body={detailBodyIncident}></Column>
             </DataTable>
         </div>
+
+        <Dialog header="Agregar Incidencia" visible={visible} style={{ width: '30vw' }} onHide={() => {if (!visible) return; setVisible(false); }} footer={footerContent}>
+            <div className="fila">
+                <label>Titulo: </label>
+                <InputText value={titulo} onChange={(e) => setTitulo(e.target.value)} />
+            </div>
+            <div className="fila">
+                <label>Prioridad</label>
+                <Dropdown value={selectedEstado} onChange={(e) => setSelectedEstado(e.value)} options={estados} optionLabel="name" 
+                placeholder="Seleccione Estado" className="p-inputtext-sm" name="estado"/>
+            </div>
+            <div className="fila">
+                <label>Descripcion: </label>
+                <InputTextarea autoResize value={descripcion} onChange={(e) => setDescripcion(e.target.value)} rows={5} cols={30} />
+            </div>
+        </Dialog>
     </Layout>
     )
 }

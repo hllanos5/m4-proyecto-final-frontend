@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { listarIncidencia } from '../api/incidenciaApi';
+import { listarIncidencia, registrarIncidencia } from '../api/incidenciaApi';
 
 function useIncidencia() {
   
@@ -8,10 +8,19 @@ function useIncidencia() {
     queryFn: () => listarIncidencia()
   });
 
+  const registrarIncidenciaMutation = useMutation({
+    mutationKey: ['incidencia-registrar'],
+    mutationFn: registrarIncidencia,
+    onError: err => console.log('Error al registrar incidencia', err),
+    onSuccess: () => {
+    },
+  });
+
 
   return {
     aIncidencia,
-    isIncidenciaLoading
+    isIncidenciaLoading,
+    registrarIncidenciaMutation
   };
 }
 
